@@ -12,9 +12,12 @@ function initFunc() {
         finalMessage: "",
         showMessage: false,
         userPrice: 0,
-        api: 'https:pizza-api.projectcodex.net/api/pizzas',
         apiInfo:{},
         addFirst:'',
+        async init(){
+            this.apiInfo = await (await fetch('https:pizza-api.projectcodex.net/api/pizzas')).json()
+            console.log(this.apiInfo)
+        },
 
         increaseSmall: function () {
             if(this.varVal >0){
