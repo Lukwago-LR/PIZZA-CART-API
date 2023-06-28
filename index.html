@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@3.3.7/dist/css/bootstrap.min.css"
+        integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <link href="public/style.css" rel="stylesheet">
+    <script src="//unpkg.com/alpinejs" defer></script>
+
+    <style>
+        [x-cloak] {
+            display: none;
+        }
+    </style>
+
+</head>
+
+<body>
+
+    <div class="heading text-capitalize text-black">
+        <h1 class="text-primary">
+            <bold>PIZZA WORLD</bold>
+        </h1>
+    </div>
+
+    <div class="row" x-cloak x-data="initFunc"
+        x-init="apiInfo = await (await fetch('https:pizza-api.projectcodex.net/api/pizzas')).json()">
+
+        <div class="row text-center order">
+            <br> <br> <br> <br> <br> <br>
+            <div class="col-sm-4 top text-center text-primary">
+                <h1>WELCOME TO PIZZA WORLD </h1>
+            </div>
+
+            <div class="col-sm-4 top">
+                <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br> <br>
+            </div>
+
+            <div class="col-sm-4">
+                <h3><b class="text-danger" x-text="addFirst"></b></h3>
+                <h2 class="text-primary">Shopping Cart</h2>
+
+                <div class="text-primary"> Small &nbsp;&nbsp;&nbsp; <span> <button x-on:click="increaseSmall"> <img
+                                src="public/add.png" width="30px" height="30px"></button>
+                    </span> <span> <button x-on:click="decreaseSmall"> <img src="public/minus.png" width="30px"
+                                height="30px"></button></span> <br>&nbsp;&nbsp;<span><b>&nbsp;&nbsp;R</b>
+                        <label x-text="small.toFixed(2)"></label></span> </div>
+                <div class="text-primary"> Medium <span> <button x-on:click="increaseMedium"> <img src="public/add.png"
+                                width="30px" height="30px"></button> </span> <span>
+                        <button x-on:click="decreaseMedium"> <img src="public/minus.png" width="30px"
+                                height="30px"></button></span> <br> &nbsp;&nbsp;<span><b>R</b>
+                        <label x-text="medium.toFixed(2)"></label></span></div>
+                <div class="text-primary"> Large &nbsp;&nbsp;&nbsp;<span> <button x-on:click="increaseLarge"> <img
+                                src="public/add.png" width="30px" height="30px"></button>
+                    </span> <span> <button x-on:click="decreaseLarge"> <img src="public/minus.png" width="30px"
+                                height="30px"></button></span> <span> <br>&nbsp;&nbsp;<span><b>R</b>
+                            <label x-text="large.toFixed(2)"></label></span></div>
+                <div class="text-primary"><label>Total Cost: R</label> <label x-text="total.toFixed(2)"></label></div>
+                <hr>
+
+                <div><button class="btn-primary" @click="checkOut">Checkout</button></div>
+                <div x-show="isShowing">
+
+                    <div>
+                        <form x-on:submit.prevent="this.userPrice">
+                            <h3 class="text-primary"><b>Payment Amount: R</b></h3> <span></span><input type="number" x-model="userPrice">
+                            <div x-show="closePay"><button x-on:click="pay">Pay</button></div>
+                        </form>
+                    </div>
+
+                </div>
+                <div x-show="showMessage" class="text-primary"><h3><b x-text="finalMessage"></b></h3></div>
+            </div>
+        </div>
+
+        <div class="row pizzas m-5 p-5">
+
+            <template x-for="pizza in apiInfo">
+                <template x-for="piz in pizza">
+                    <template x-if="piz['size']=='small'">
+                        <div class="col-sm-4 m-4 table-bordered">
+                            <div class="pizza small_pizza">
+                                <h2><label x-text="piz['size']"></label>&nbsp;<label>Pizza</label></h2>
+                                <img src="public/27.jpg" alt="" height="100" width="100">
+                                <h4>Price: R<label x-text="piz['price']"></label></h4>
+                                <h4> Type: <label x-text="piz['type']"></label></h4>
+                                <h4> Flavour: <label x-text="piz['flavour']"></label></h4>
+                                <h4> Featured: <label x-text="piz['featured']"></label></h4>
+                                <button class="smallLabel" x-on:click="increaseSmall, varVal=piz['price']">Buy</button>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+
+            <template x-for="pizza in apiInfo">
+                <template x-for="piz in pizza">
+                    <template x-if="piz['size']=='medium'">
+                        <div class="col-sm-4 m-4 table-bordered">
+                            <div class="pizza medium_pizza">
+                                <h2><label x-text="piz['size']"></label>&nbsp;<label>Pizza</label></h2>
+                                <img src="public/26.jpg" alt="" height="100" width="100">
+                                <h4>Price: R<label x-text="piz['price']"></label></h4>
+                                <h4> Type: <label x-text="piz['type']"></label></h4>
+                                <h4> Flavour: <label x-text="piz['flavour']"></label></h4>
+                                <h4> Featured: <label x-text="piz['featured']"></label></h4>
+                                <button class="smallLabel" x-on:click="increaseMedium, varVal=piz['price']">Buy</button>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+
+            <template x-for="pizza in apiInfo">
+                <template x-for="piz in pizza">
+                    <template x-if="piz['size']=='large'">
+                        <div class="col-sm-4 m-4 table-bordered">
+                            <div class="pizza large_pizza">
+                                <h2><label x-text="piz['size']"></label>&nbsp;<label>Pizza</label></h2>
+                                <img src="public/25.jpg" alt="" height="100" width="100">
+                                <h4>Price: R<label x-text="piz['price']"></label></h4>
+                                <h4> Type: <label x-text="piz['type']"></label></h4>
+                                <h4> Flavour: <label x-text="piz['flavour']"></label></h4>
+                                <h4> Featured: <label x-text="piz['featured']"></label></h4>
+                                <button class="smallLabel" x-on:click="increaseLarge, varVal=piz['price']">Buy</button>
+                            </div>
+                        </div>
+                    </template>
+                </template>
+            </template>
+
+
+        </div>
+
+    </div>
+
+    <div class="pizza contact_us text-primary">
+        <h2>Contact Details</h2>
+
+        <p>Mobile : 011 340 1231</p>
+        <p>Email : lukwagorsaved@gmail.com</p>
+
+    </div>
+</body>
+<script src="public/code.js"></script>
+
+</html>
