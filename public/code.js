@@ -16,7 +16,7 @@ function initFunc() {
         addFirst: '',
          init() {
          
-            this.apiInfo = axios.get('https:pizza-api.projectcodex.net/api/pizzas')
+            this.apiInfo = axios.get('https://pizza-api.projectcodex.net/api/pizzas')
                 .then(function (response) {
                     return response.data;
                 })
