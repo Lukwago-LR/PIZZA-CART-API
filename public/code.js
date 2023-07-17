@@ -1,128 +1,162 @@
 function initFunc() {
 
     return {
-
-        small: 0,
-        medium: 0,
-        large: 0,
-        total: 0,
-        varVal: 0,
+        homePage: false,
+        loginPage: true,
         closePay: true,
         isShowing: false,
-        finalMessage: "",
-        showMessage: false,
+        purchaseMessage: "",
         userPrice: 0,
         apiInfo: {},
         addFirst: '',
-         init() {
-         
+        cartButton: true,
+        openCart: false,
+        userName: "",
+        passWord: "",
+        cartCode: "",
+        cartPizzas: [],
+        featuredPizzas: [],
+        id: 0,
+        status: "",
+        cartTotal: 0.00,
+        change: 0,
+
+        getFeaturedPizzas() {
+
+            axios.post('https://pizza-api.projectcodex.net/api/pizzas/featured',
+                {
+                    "username": localStorage["userName"],
+                    "pizza_id": 7
+                })
+
+            axios.get(`https://pizza-api.projectcodex.net/api/pizzas/featured?username=${localStorage["userName"]}`)
+                .then(result => {
+                    this.featuredPizzas = result.data.pizzas;
+                })
+        },
+
+        pay() {
+            axios.post('https://pizza-api.projectcodex.net/api/pizza-cart/pay',
+                {
+                    "cart_code": localStorage['cartCode'],
+                    "amount": this.userPrice
+                })
+                .then(result => {
+
+                    this.change = (this.userPrice - this.cartTotal).toFixed(2);
+                    if (this.change > 0) {
+                        this.purchaseMessage = `Transaction was successsful and your Balance is R${this.change}`
+                    } else {
+                        this.purchaseMessage = result.data.message;
+                    }
+
+                    this.getCart();
+                })
+
+        },
+
+        addToCart(currentPizzaId) {
+            axios.post('https://pizza-api.projectcodex.net/api/pizza-cart/add',
+                {
+                    cart_code: localStorage['cartCode'],
+                    pizza_id: currentPizzaId
+                })
+                .then(result => {
+                    this.getCart()
+                })
+
+
+        },
+
+        removeFromCart(currentPizzaId) {
+            axios.post('https://pizza-api.projectcodex.net/api/pizza-cart/remove',
+                {
+                    cart_code: localStorage['cartCode'],
+                    pizza_id: currentPizzaId
+                }).then(result => {
+                    this.getCart()
+                })
+
+        },
+
+        createCart() {
+            axios.get(`https://pizza-api.projectcodex.net/api/pizza-cart/create?username=${this.userName}`)
+                .then(result => {
+                    this.cartCode = result.data.cart_code;
+                    localStorage['cartCode'] = this.cartCode;
+                })
+        },
+
+        getCart() {
+            let currentCode = localStorage["cartCode"]
+            const getCartURL = `https://pizza-api.projectcodex.net/api/pizza-cart/${currentCode}/get`
+            this.cartData = axios.get(getCartURL).then(result => {
+                let cartData = result.data;
+                this.cartPizzas = cartData.pizzas;
+                this.cartTotal = cartData.total;
+                this.id = cartData.id;
+                this.status = cartData.status;
+            })
+
+            this.openCart = true;
+            this.cartButton = false;
+        },
+
+        getLeastFeaturedItem(ary, size) {
+            var id = 0;
+            var featurePiz = {};
+            for (let i = 0; i < ary.length; i++) {
+                if ((ary[i].id > id) && (size == ary[i].size)) {
+                    id = ary[i].id;
+                    featurePiz = ary[i];
+                }
+            }
+
+            this.featuredPizzas.push(featurePiz);
+            
+            axios.post('https://pizza-api.projectcodex.net/api/pizzas/featured',
+                {
+                    "username": localStorage["userName"],
+                    "pizza_id": id
+                })
+        },
+
+        init() {
             this.apiInfo = axios.get('https://pizza-api.projectcodex.net/api/pizzas')
-                .then(function (response) {
-                    return response.data;
+                .then(result => {
+                    this.getLeastFeaturedItem(result.data.pizzas, "large")
+                    this.getLeastFeaturedItem(result.data.pizzas, "medium")
+                    this.getLeastFeaturedItem(result.data.pizzas, "small")
+                    return result.data;
+
                 })
                 .catch(function (error) {
                     console.log(error);
                     return {};
                 })
+
+            // this.getFeaturedPizzas();
         },
 
-        increaseSmall: function () {
-            if (this.varVal > 0) {
-                this.small += this.varVal;
-                this.total = this.small + this.medium + this.large;
-            } else {
-                this.addFirst = "Choose pizza before additions or subtractions";
-                setTimeout(() => {
-                    this.addFirst = '';
-                }, 3000);
-
-            }
+        loggedin: function () {
+            this.homePage = true;
+            this.loginPage = false;
+            localStorage["userName"] = this.userName;
+            localStorage["passWord"] = this.passWord;
+            this.createCart();
         },
 
-        increaseMedium: function () {
-            if (this.varVal > 0) {
-                this.medium += this.varVal;
-                this.total = this.small + this.medium + this.large;
-            } else {
-                this.addFirst = "Choose pizza before additions or subtractions";
-                setTimeout(() => {
-                    this.addFirst = '';
-                }, 3000);
-            }
-        },
-
-        increaseLarge: function () {
-            if (this.varVal > 0) {
-                this.total = this.small + this.medium + this.large;
-                this.large += this.varVal;
-            } else {
-                this.addFirst = "Choose pizza before additions or subtractions";
-                setTimeout(() => {
-                    this.addFirst = '';
-                }, 3000);
-            }
-        },
-
-        decreaseSmall: function () {
-            if (this.varVal > 0) {
-                if (this.small > 0) {
-                    this.small -= this.varVal;
-                    this.total = this.small + this.medium + this.large;
-                }
-            } else {
-                this.addFirst = "Choose pizza before additions or subtractions";
-                setTimeout(() => {
-                    this.addFirst = '';
-                }, 3000);
-            }
-        },
-
-        decreaseMedium: function () {
-            if (this.varVal > 0) {
-                if (this.medium > 0) {
-                    this.medium -= this.varVal;
-                    this.total = this.small + this.medium + this.large;
-                }
-            } else {
-                this.addFirst = "Choose pizza before additions or subtractions";
-                setTimeout(() => {
-                    this.addFirst = '';
-                }, 3000);
-            }
-        },
-
-        decreaseLarge: function () {
-            if (this.varVal > 0) {
-                if (this.large > 0) {
-                    this.large -= this.varVal;
-                    this.total = this.small + this.medium + this.large;
-                }
-            }
-            else {
-                this.addFirst = "Choose pizza before additions or subtractions";
-                setTimeout(() => {
-                    this.addFirst = '';
-                }, 3000);
-            }
+        logout() {
+            this.homePage = "";
+            this.loginPage = "";
+            localStorage["userName"] = "";
+            localStorage["cartCode"] = "";
         },
 
         checkOut: function () {
             this.isShowing = !this.isShowing;
             this.closePay = true;
         },
-
-        pay: function () {
-            this.showMessage = true;
-            this.closePay = false;
-            if (this.userPrice < this.total) {
-                this.finalMessage = "Indequate funds";
-            } else if (this.userPrice > this.total) {
-                var p = this.userPrice - this.total;
-                this.finalMessage = "Purchase Completed Sucessfully and your balance is R" + p.toFixed(2);
-            } else {
-                this.finalMessage = "Purchase Completed Sucessfully";
-            }
-        }
 
     };
 }

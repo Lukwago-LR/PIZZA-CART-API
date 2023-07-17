@@ -1,25 +1,53 @@
-body{
-font-family: Verdana, Geneva, Tahoma, sans-serif;
-text-align: center;
-background-image: url("thumb.jpg");
-background-size: auto;
+body {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    text-align: center;
+    margin: 50px;
+
+    &::before {
+        content: '';
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        right: 0px;
+        left: 0px;
+        background-image: url("thumb.jpg");
+        background-size: cover;
+        background-position: top center;
+        opacity: 0.2
+    }
 }
 
-.heading{
+.welcome {
+    float: left;
+}
+
+.shoppingcart {
+    float: right;
+}
+
+.login {
+    color: red;
+    padding: 50px;
+    border: solid cornflowerblue;
+    border-radius: 2em;
+    margin-left: 35%;
+}
+
+.heading {
     background-color: #8AC926;
     border-radius: 1em;
-    margin: 1em;
 }
 
 button {
     transition-duration: 0.4s;
     border-radius: 8px;
-  }
-  
+}
+
 button:hover {
-    background-color: #4CAF50; /* Green */
+    background-color: #4CAF50;
+    /* Green */
     color: white;
-  }
+}
 
 .order {
     border: 2px solid rgb(229, 228, 235);
@@ -28,29 +56,48 @@ button:hover {
     margin: 10px;
 }
 
-.pizza {
-    border: 1px solid gainsboro;
-    padding: 20px;
-    margin: 2em;
-    margin-bottom: 0.5em;
-    border-radius: 1em;
-   
-    /*display: inline-block;
-    min-height:30em; */
+img {
+    border-radius: 30%;
 }
+
 
 .medium_pizza {
-    background-color: #a6e9fa;
+    color: #0af82a;
+    border: solid #0af82a;
+    border-radius: 2em;
+    text-shadow: 1px 1px #19bae2;
 }
+
 
 .large_pizza {
-    background-color: #ada7b4;
+    color: #0820f8;
+    border: solid #0820f8;
+    border-radius: 2em;
+    text-shadow: 1px 1px #19bae2;
 }
 
-.small_pizza{
-    background-color: #8b959c;
+.small_pizza {
+    color: #fc0808;
+    border: solid #fc0808;
+    border-radius: 2em;
+    text-shadow: 1px 1px #19bae2;
 }
 
 .contact_us {
-    background-color: #8AC926;
+    background-color:  #8AC926;
+    border-radius: 1em;
 }
+
+table, th, td {
+    border:1px solid black;
+    border-style: double solid;
+    color: red;
+ }
+
+ table{
+    width: 100%;
+ }
+
+ td{
+    color:blue;
+ }
