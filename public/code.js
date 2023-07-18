@@ -20,6 +20,7 @@ function initFunc() {
         status: "",
         cartTotal: 0.00,
         change: 0,
+        loginMessage: "",
 
         getFeaturedPizzas() {
 
@@ -46,12 +47,12 @@ function initFunc() {
                     this.change = (this.userPrice - this.cartTotal).toFixed(2);
                     if (this.change > 0) {
                         this.purchaseMessage = `Transaction was successsful and your Balance is R${this.change}`
-                        this.cartPizzas=[];
-                        
+                        this.cartPizzas = [];
+
                     } else {
                         this.purchaseMessage = result.data.message;
-                        if(this.purchaseMessage =="Cart payment successfull!"){
-                            this.cartPizzas=[];
+                        if (this.purchaseMessage == "Cart payment successfull!") {
+                            this.cartPizzas = [];
                         }
                     }
                 })
@@ -116,7 +117,7 @@ function initFunc() {
             }
 
             this.featuredPizzas.push(featurePiz);
-            
+
             axios.post('https://pizza-api.projectcodex.net/api/pizzas/featured',
                 {
                     "username": localStorage["userName"],
@@ -140,16 +141,23 @@ function initFunc() {
         },
 
         loggedin: function () {
-            this.homePage = true;
-            this.loginPage = false;
-            localStorage["userName"] = this.userName;
-            localStorage["passWord"] = this.passWord;
-            this.createCart();
+            if (this.userName == "") {
+                this.loginMessage = "invalid username"
+            } else if (this.passWord == "") {
+                this.loginMessage = "invalid password"
+            } else {
+                this.homePage = true;
+                this.loginPage = false;
+                localStorage["userName"] = this.userName;
+                localStorage["passWord"] = this.passWord;
+                this.createCart();
+            }
+
         },
 
         logout() {
-            this.homePage = "";
-            this.loginPage = "";
+            this.homePage = false;
+            this.loginPage = true;
             localStorage["userName"] = "";
             localStorage["cartCode"] = "";
         },

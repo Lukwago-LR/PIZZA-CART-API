@@ -76,6 +76,11 @@ img {
     text-shadow: 1px 1px #19bae2;
 }
 
+.logout {
+    float: right;
+    background-color: lightgreen;
+}
+
 .small_pizza {
     color: #fc0808;
     border: solid #fc0808;
@@ -84,20 +89,22 @@ img {
 }
 
 .contact_us {
-    background-color:  #8AC926;
+    background-color: #8AC926;
     border-radius: 1em;
 }
 
-table, th, td {
-    border:1px solid black;
+table,
+th,
+td {
+    border: 1px solid black;
     border-style: double solid;
     color: red;
- }
+}
 
- table{
+table {
     width: 100%;
- }
+}
 
- td{
-    color:blue;
- }
+td {
+    color: blue;
+}

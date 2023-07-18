@@ -21,8 +21,8 @@
 
 <body x-cloak x-data="initFunc">
 
-    <div class="heading text-capitalize text-black">
-        <h1 class="text-primary">
+    <div class="heading text-capitalize text-black text-primary">
+        <h1>
             <bold>PIZZA WORLD</bold>
         </h1>
     </div>
@@ -42,7 +42,7 @@
                     <label><b>Username</b></label>
                     <input type="text" placeholder="Enter Username" x-model="userName"><br>
                     <label><b>Password</b></label>
-                    <input type="password" placeholder="Enter Password" required x-model="passWord"><br>
+                    <input type="password" placeholder="Enter Password" x-model="passWord"><br>
 
                     <button @click="loggedin">Login</button> <br>
                     <label><input type="checkbox" checked="checked"> Remember me </label>
@@ -55,13 +55,18 @@
                         <button>Register</button>
                     </div>
                 </form>
+                <h4><b class="text-danger" x-text="loginMessage"></b></h4>
+
             </div>
 
             <div class="col-sm-4 shoppingcart" x-show="homePage">
 
-                <div x-show="cartButton"><button x-on:click="getCart">
-                        <h3 class="text-danger">GO TO SHOPPING CART</h3>
-                    </button></div>
+                <div x-show="cartButton" class="text-danger">
+                    <button x-on:click="getCart">GO TO SHOPPING CART</button>
+                    <div class="logout">
+                        <button @click="logout">logout</button>
+                    </div>
+                </div>
 
                 <div x-show="openCart">
                     <h4><b class="text-danger" x-text="purchaseMessage"></b></h4>
@@ -117,56 +122,56 @@
         <h1 class="text-primary" x-show="homePage"><b>FEATURE PIZZAS</b></h1>
         <div class="row m-5 p-5" x-show="homePage">
 
-           
-                <template x-for="piz in featuredPizzas">
-                    <template x-if="piz['size']=='small'">
-                        <div class="col-sm-4 m-4">
-                            <div class="pizza">
-                                <h4><label x-text="piz['size']"></label>&nbsp;<label>pizza</label></h4>
-                                <img src="public/27.jpg" alt="" height="300" width="425">
-                                <p>Price: R<label x-text="piz['price']"></label></p>
-                                <p> Type: <label x-text="piz['type']"></label></p>
-                                <p> Flavour: <label x-text="piz['flavour']"></label></p>
-                                <p> Featured: <label x-text="piz['featured']"></label></p>
-                                <button x-on:click="addToCart(piz['id'])"><b>Add to cart</b></button>
-                            </div>
-                        </div>
-                    </template>
-                </template>
 
-                <template x-for="piz in featuredPizzas">
-                    <template x-if="piz['size']=='medium'">
-                        <div class="col-sm-4 m-4">
-                            <div class="pizza">
-                                <h4><label x-text="piz['size']"></label>&nbsp;<label>pizza</label></h4>
-                                <img src="public/26.jpg" alt="" height="300" width="425">
-                                <p>Price: R<label x-text="piz['price']"></label></p>
-                                <p> Type: <label x-text="piz['type']"></label></p>
-                                <p> Flavour: <label x-text="piz['flavour']"></label></p>
-                                <p> Featured: <label x-text="piz['featured']"></label></p>
-                                <button x-on:click="addToCart(piz['id'])"><b>Add to cart</b></button>
-                            </div>
+            <template x-for="piz in featuredPizzas">
+                <template x-if="piz['size']=='small'">
+                    <div class="col-sm-4 m-4">
+                        <div class="pizza">
+                            <h4><label x-text="piz['size']"></label>&nbsp;<label>pizza</label></h4>
+                            <img src="public/27.jpg" alt="" height="300" width="425">
+                            <p>Price: R<label x-text="piz['price']"></label></p>
+                            <p> Type: <label x-text="piz['type']"></label></p>
+                            <p> Flavour: <label x-text="piz['flavour']"></label></p>
+                            <p> Featured: <label x-text="piz['featured']"></label></p>
+                            <button x-on:click="addToCart(piz['id'])"><b>Add to cart</b></button>
                         </div>
-                    </template>
+                    </div>
                 </template>
+            </template>
+
+            <template x-for="piz in featuredPizzas">
+                <template x-if="piz['size']=='medium'">
+                    <div class="col-sm-4 m-4">
+                        <div class="pizza">
+                            <h4><label x-text="piz['size']"></label>&nbsp;<label>pizza</label></h4>
+                            <img src="public/26.jpg" alt="" height="300" width="425">
+                            <p>Price: R<label x-text="piz['price']"></label></p>
+                            <p> Type: <label x-text="piz['type']"></label></p>
+                            <p> Flavour: <label x-text="piz['flavour']"></label></p>
+                            <p> Featured: <label x-text="piz['featured']"></label></p>
+                            <button x-on:click="addToCart(piz['id'])"><b>Add to cart</b></button>
+                        </div>
+                    </div>
+                </template>
+            </template>
 
 
-                <template x-for="piz in featuredPizzas">
-                    <template x-if="piz['size']=='large'">
-                        <div class="col-sm-4 m-4">
-                            <div class="pizza">
-                                <h4><label x-text="piz['size']"></label>&nbsp;<label>pizza</label></h4>
-                                <img src="public/25.jpg" alt="" height="300" width="425">
-                                <p>Price: R<label x-text="piz['price']"></label></p>
-                                <p> Type: <label x-text="piz['type']"></label></p>
-                                <p> Flavour: <label x-text="piz['flavour']"></label></p>
-                                <p> Featured: <label x-text="piz['featured']"></label></p>
-                                <button x-on:click="addToCart(piz['id'])"><b>Add to cart</b></button>
-                            </div>
+            <template x-for="piz in featuredPizzas">
+                <template x-if="piz['size']=='large'">
+                    <div class="col-sm-4 m-4">
+                        <div class="pizza">
+                            <h4><label x-text="piz['size']"></label>&nbsp;<label>pizza</label></h4>
+                            <img src="public/25.jpg" alt="" height="300" width="425">
+                            <p>Price: R<label x-text="piz['price']"></label></p>
+                            <p> Type: <label x-text="piz['type']"></label></p>
+                            <p> Flavour: <label x-text="piz['flavour']"></label></p>
+                            <p> Featured: <label x-text="piz['featured']"></label></p>
+                            <button x-on:click="addToCart(piz['id'])"><b>Add to cart</b></button>
                         </div>
-                    </template>
+                    </div>
                 </template>
-        
+            </template>
+
 
         </div>
         <h1 class="text-primary" x-show="homePage"><b>PIZZAS</b></h1>
