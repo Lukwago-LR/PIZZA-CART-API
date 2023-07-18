@@ -46,11 +46,14 @@ function initFunc() {
                     this.change = (this.userPrice - this.cartTotal).toFixed(2);
                     if (this.change > 0) {
                         this.purchaseMessage = `Transaction was successsful and your Balance is R${this.change}`
+                        this.cartPizzas=[];
+                        
                     } else {
                         this.purchaseMessage = result.data.message;
+                        if(this.purchaseMessage =="Cart payment successfull!"){
+                            this.cartPizzas=[];
+                        }
                     }
-
-                    this.getCart();
                 })
 
         },
@@ -134,8 +137,6 @@ function initFunc() {
                     console.log(error);
                     return {};
                 })
-
-            // this.getFeaturedPizzas();
         },
 
         loggedin: function () {
