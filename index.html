@@ -61,8 +61,8 @@
 
             <div class="col-sm-4 shoppingcart" x-show="homePage">
 
-                <div x-show="cartButton" class="text-danger">
-                    <button x-on:click="getCart">GO TO SHOPPING CART</button>
+                <div class="text-danger">
+                    <button x-on:click="openCart=!openCart">OPEN/HIDE CART</button>
                     <div class="logout">
                         <button @click="logout">logout</button>
                     </div>

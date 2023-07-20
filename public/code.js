@@ -9,7 +9,6 @@ function initFunc() {
         userPrice: 0,
         apiInfo: {},
         addFirst: '',
-        cartButton: true,
         openCart: false,
         userName: "",
         passWord: "",
@@ -101,9 +100,7 @@ function initFunc() {
                 this.id = cartData.id;
                 this.status = cartData.status;
             })
-
-            this.openCart = true;
-            this.cartButton = false;
+          
         },
 
         getLeastFeaturedItem(ary, size) {
